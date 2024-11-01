@@ -399,3 +399,20 @@ test('the command handler when using webhook to process updates for commands wil
 
     expect($update)->toBeInstanceOf(Update::class);
 });
+
+test('a menu is set correctly', function () {
+    $api = api($this->getGuzzleHttpClient([
+        $this->makeFakeServerResponse(true),
+    ]));
+    $api->setChatMenuButton([
+        'chat_id' => '123',
+        'menu' => new \Telegram\Bot\Menu\MenuButtonCommands()
+    ]);
+
+    /** @var Request $request */
+    $request = $this->getHistory()->pluck('request')->first();
+    $body = (string) $request->getBody();
+
+    $this->assertStringContainsString('chat_id=123', $body);
+    $this->assertStringContainsString('menu=', $body);
+});

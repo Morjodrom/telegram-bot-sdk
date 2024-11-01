@@ -674,4 +674,16 @@ trait Chat
     {
         return $this->post('deleteChatStickerSet', $params)->getResult();
     }
+
+    /**
+     * @param array{chat_id: string|int, menu: \Telegram\Bot\Menu\MenuButtonInterface} $params
+     *
+     * @return bool
+     * @throws \Telegram\Bot\Exceptions\TelegramSDKException
+     */
+    public function setChatMenuButton(array $params): bool
+    {
+        $params['menu'] = (string) $params['menu'];
+        return $this->post('setChatMenuButton', $params)->getResult();
+    }
 }
